@@ -1,0 +1,593 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="NHapiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CategoryType">
+          <Key>
+            <PropertyRef Name="idctype" />
+          </Key>
+          <Property Name="idctype" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="categoryname" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="IdCourse" />
+          </Key>
+          <Property Name="IdCourse" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CoursName" Type="nvarchar" MaxLength="50" />
+          <Property Name="shortDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="dateExpected" Type="datetime" />
+          <Property Name="hoursNO" Type="int" />
+          <Property Name="feature" Type="bit" />
+          <Property Name="imgsrc" Type="nvarchar" MaxLength="50" />
+          <Property Name="vediosrc" Type="nvarchar" MaxLength="50" />
+          <Property Name="idsubcategory" Type="int" />
+        </EntityType>
+        <EntityType Name="CourseDetails">
+          <Key>
+            <PropertyRef Name="idCoursedetails" />
+          </Key>
+          <Property Name="idCoursedetails" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idcourses" Type="int" />
+          <Property Name="description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="PostFeed">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PostSubject" Type="nvarchar" MaxLength="50" />
+          <Property Name="PostContent" Type="nvarchar(max)" />
+          <Property Name="postImg" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SilederImg">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="imgslidsrc" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Subcategory">
+          <Key>
+            <PropertyRef Name="Idsubcategory" />
+          </Key>
+          <Property Name="Idsubcategory" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subcategoryname" Type="nvarchar" MaxLength="50" />
+          <Property Name="idcategorytype" Type="int" />
+          <Property Name="subdescription" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="iduserpor" />
+          </Key>
+          <Property Name="iduserpor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="CourseId" Type="int" />
+          <Property Name="isregister" Type="bit" />
+          <Property Name="phonenum" Type="int" />
+          <Property Name="Intrested" Type="bit" />
+          <Property Name="PostId" Type="int" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VideoName" Type="nvarchar" MaxLength="50" />
+          <Property Name="videoSrc" Type="nvarchar(max)" />
+          <Property Name="IdVideoCategory" Type="int" />
+        </EntityType>
+        <EntityType Name="VideoCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IdCourse" Type="int" />
+        </EntityType>
+        <Association Name="FK_Course_Subcategory">
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="0..1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="Idsubcategory" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="idsubcategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseDetails_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="CourseDetails" Type="Self.CourseDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="IdCourse" />
+            </Principal>
+            <Dependent Role="CourseDetails">
+              <PropertyRef Name="idcourses" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subcategory_CategoryType">
+          <End Role="CategoryType" Type="Self.CategoryType" Multiplicity="0..1" />
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoryType">
+              <PropertyRef Name="idctype" />
+            </Principal>
+            <Dependent Role="Subcategory">
+              <PropertyRef Name="idcategorytype" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="IdCourse" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_PostFeed">
+          <End Role="PostFeed" Type="Self.PostFeed" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PostFeed">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Video_VideoCategory">
+          <End Role="VideoCategory" Type="Self.VideoCategory" Multiplicity="0..1" />
+          <End Role="Video" Type="Self.Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VideoCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="IdVideoCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VideoCategory_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="VideoCategory" Type="Self.VideoCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="IdCourse" />
+            </Principal>
+            <Dependent Role="VideoCategory">
+              <PropertyRef Name="IdCourse" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NHapiModelStoreContainer">
+          <EntitySet Name="CategoryType" EntityType="Self.CategoryType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseDetails" EntityType="Self.CourseDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PostFeed" EntityType="Self.PostFeed" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SilederImg" EntityType="Self.SilederImg" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subcategory" EntityType="Self.Subcategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VideoCategory" EntityType="Self.VideoCategory" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Course_Subcategory" Association="Self.FK_Course_Subcategory">
+            <End Role="Subcategory" EntitySet="Subcategory" />
+            <End Role="Course" EntitySet="Course" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseDetails_Course" Association="Self.FK_CourseDetails_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subcategory_CategoryType" Association="Self.FK_Subcategory_CategoryType">
+            <End Role="CategoryType" EntitySet="CategoryType" />
+            <End Role="Subcategory" EntitySet="Subcategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Course" Association="Self.FK_UserProfile_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_PostFeed" Association="Self.FK_UserProfile_PostFeed">
+            <End Role="PostFeed" EntitySet="PostFeed" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Video_VideoCategory" Association="Self.FK_Video_VideoCategory">
+            <End Role="VideoCategory" EntitySet="VideoCategory" />
+            <End Role="Video" EntitySet="Video" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VideoCategory_Course" Association="Self.FK_VideoCategory_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="VideoCategory" EntitySet="VideoCategory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NHapiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CategoryType">
+          <Key>
+            <PropertyRef Name="idctype" />
+          </Key>
+          <Property Name="idctype" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="categoryname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Subcategories" Relationship="Self.FK_Subcategory_CategoryType" FromRole="CategoryType" ToRole="Subcategory" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="IdCourse" />
+          </Key>
+          <Property Name="IdCourse" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CoursName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="shortDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dateExpected" Type="DateTime" Precision="3" />
+          <Property Name="hoursNO" Type="Int32" />
+          <Property Name="feature" Type="Boolean" />
+          <Property Name="imgsrc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="vediosrc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="idsubcategory" Type="Int32" />
+          <NavigationProperty Name="Subcategory" Relationship="Self.FK_Course_Subcategory" FromRole="Course" ToRole="Subcategory" />
+          <NavigationProperty Name="CourseDetails" Relationship="Self.FK_CourseDetails_Course" FromRole="Course" ToRole="CourseDetails" />
+          <NavigationProperty Name="UserProfiles" Relationship="Self.FK_UserProfile_Course" FromRole="Course" ToRole="UserProfile" />
+          <NavigationProperty Name="VideoCategories" Relationship="Self.FK_VideoCategory_Course" FromRole="Course" ToRole="VideoCategory" />
+        </EntityType>
+        <EntityType Name="CourseDetail">
+          <Key>
+            <PropertyRef Name="idCoursedetails" />
+          </Key>
+          <Property Name="idCoursedetails" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idcourses" Type="Int32" />
+          <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_CourseDetails_Course" FromRole="CourseDetails" ToRole="Course" />
+        </EntityType>
+        <EntityType Name="PostFeed">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PostSubject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PostContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="postImg" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserProfiles" Relationship="Self.FK_UserProfile_PostFeed" FromRole="PostFeed" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="SilederImg">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="imgslidsrc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Subcategory">
+          <Key>
+            <PropertyRef Name="Idsubcategory" />
+          </Key>
+          <Property Name="Idsubcategory" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subcategoryname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="idcategorytype" Type="Int32" />
+          <Property Name="subdescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CategoryType" Relationship="Self.FK_Subcategory_CategoryType" FromRole="Subcategory" ToRole="CategoryType" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK_Course_Subcategory" FromRole="Subcategory" ToRole="Course" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="iduserpor" />
+          </Key>
+          <Property Name="iduserpor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CourseId" Type="Int32" />
+          <Property Name="isregister" Type="Boolean" />
+          <Property Name="phonenum" Type="Int32" />
+          <Property Name="Intrested" Type="Boolean" />
+          <Property Name="PostId" Type="Int32" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_UserProfile_Course" FromRole="UserProfile" ToRole="Course" />
+          <NavigationProperty Name="PostFeed" Relationship="Self.FK_UserProfile_PostFeed" FromRole="UserProfile" ToRole="PostFeed" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VideoName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="videoSrc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdVideoCategory" Type="Int32" />
+          <NavigationProperty Name="VideoCategory" Relationship="Self.FK_Video_VideoCategory" FromRole="Video" ToRole="VideoCategory" />
+        </EntityType>
+        <EntityType Name="VideoCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IdCourse" Type="Int32" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_VideoCategory_Course" FromRole="VideoCategory" ToRole="Course" />
+          <NavigationProperty Name="Videos" Relationship="Self.FK_Video_VideoCategory" FromRole="VideoCategory" ToRole="Video" />
+        </EntityType>
+        <Association Name="FK_Subcategory_CategoryType">
+          <End Role="CategoryType" Type="Self.CategoryType" Multiplicity="0..1" />
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoryType">
+              <PropertyRef Name="idctype" />
+            </Principal>
+            <Dependent Role="Subcategory">
+              <PropertyRef Name="idcategorytype" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Course_Subcategory">
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="0..1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="Idsubcategory" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="idsubcategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseDetails_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="CourseDetails" Type="Self.CourseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="IdCourse" />
+            </Principal>
+            <Dependent Role="CourseDetails">
+              <PropertyRef Name="idcourses" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="IdCourse" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VideoCategory_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="VideoCategory" Type="Self.VideoCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="IdCourse" />
+            </Principal>
+            <Dependent Role="VideoCategory">
+              <PropertyRef Name="IdCourse" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_PostFeed">
+          <End Role="PostFeed" Type="Self.PostFeed" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PostFeed">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Video_VideoCategory">
+          <End Role="VideoCategory" Type="Self.VideoCategory" Multiplicity="0..1" />
+          <End Role="Video" Type="Self.Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VideoCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="IdVideoCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NHapiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CategoryTypes" EntityType="Self.CategoryType" />
+          <EntitySet Name="Courses" EntityType="Self.Course" />
+          <EntitySet Name="CourseDetails" EntityType="Self.CourseDetail" />
+          <EntitySet Name="PostFeeds" EntityType="Self.PostFeed" />
+          <EntitySet Name="SilederImgs" EntityType="Self.SilederImg" />
+          <EntitySet Name="Subcategories" EntityType="Self.Subcategory" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="UserProfiles" EntityType="Self.UserProfile" />
+          <EntitySet Name="Videos" EntityType="Self.Video" />
+          <EntitySet Name="VideoCategories" EntityType="Self.VideoCategory" />
+          <AssociationSet Name="FK_Subcategory_CategoryType" Association="Self.FK_Subcategory_CategoryType">
+            <End Role="CategoryType" EntitySet="CategoryTypes" />
+            <End Role="Subcategory" EntitySet="Subcategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Course_Subcategory" Association="Self.FK_Course_Subcategory">
+            <End Role="Subcategory" EntitySet="Subcategories" />
+            <End Role="Course" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseDetails_Course" Association="Self.FK_CourseDetails_Course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Course" Association="Self.FK_UserProfile_Course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VideoCategory_Course" Association="Self.FK_VideoCategory_Course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="VideoCategory" EntitySet="VideoCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_PostFeed" Association="Self.FK_UserProfile_PostFeed">
+            <End Role="PostFeed" EntitySet="PostFeeds" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Video_VideoCategory" Association="Self.FK_Video_VideoCategory">
+            <End Role="VideoCategory" EntitySet="VideoCategories" />
+            <End Role="Video" EntitySet="Videos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NHapiModelStoreContainer" CdmEntityContainer="NHapiEntities">
+          <EntitySetMapping Name="CategoryTypes">
+            <EntityTypeMapping TypeName="NHapiModel.CategoryType">
+              <MappingFragment StoreEntitySet="CategoryType">
+                <ScalarProperty Name="idctype" ColumnName="idctype" />
+                <ScalarProperty Name="categoryname" ColumnName="categoryname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="NHapiModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="IdCourse" ColumnName="IdCourse" />
+                <ScalarProperty Name="CoursName" ColumnName="CoursName" />
+                <ScalarProperty Name="shortDescription" ColumnName="shortDescription" />
+                <ScalarProperty Name="dateExpected" ColumnName="dateExpected" />
+                <ScalarProperty Name="hoursNO" ColumnName="hoursNO" />
+                <ScalarProperty Name="feature" ColumnName="feature" />
+                <ScalarProperty Name="imgsrc" ColumnName="imgsrc" />
+                <ScalarProperty Name="vediosrc" ColumnName="vediosrc" />
+                <ScalarProperty Name="idsubcategory" ColumnName="idsubcategory" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseDetails">
+            <EntityTypeMapping TypeName="NHapiModel.CourseDetail">
+              <MappingFragment StoreEntitySet="CourseDetails">
+                <ScalarProperty Name="idCoursedetails" ColumnName="idCoursedetails" />
+                <ScalarProperty Name="idcourses" ColumnName="idcourses" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostFeeds">
+            <EntityTypeMapping TypeName="NHapiModel.PostFeed">
+              <MappingFragment StoreEntitySet="PostFeed">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="PostSubject" ColumnName="PostSubject" />
+                <ScalarProperty Name="PostContent" ColumnName="PostContent" />
+                <ScalarProperty Name="postImg" ColumnName="postImg" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SilederImgs">
+            <EntityTypeMapping TypeName="NHapiModel.SilederImg">
+              <MappingFragment StoreEntitySet="SilederImg">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="imgslidsrc" ColumnName="imgslidsrc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subcategories">
+            <EntityTypeMapping TypeName="NHapiModel.Subcategory">
+              <MappingFragment StoreEntitySet="Subcategory">
+                <ScalarProperty Name="Idsubcategory" ColumnName="Idsubcategory" />
+                <ScalarProperty Name="subcategoryname" ColumnName="subcategoryname" />
+                <ScalarProperty Name="idcategorytype" ColumnName="idcategorytype" />
+                <ScalarProperty Name="subdescription" ColumnName="subdescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="NHapiModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="NHapiModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="iduserpor" ColumnName="iduserpor" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="isregister" ColumnName="isregister" />
+                <ScalarProperty Name="phonenum" ColumnName="phonenum" />
+                <ScalarProperty Name="Intrested" ColumnName="Intrested" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Videos">
+            <EntityTypeMapping TypeName="NHapiModel.Video">
+              <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="VideoName" ColumnName="VideoName" />
+                <ScalarProperty Name="videoSrc" ColumnName="videoSrc" />
+                <ScalarProperty Name="IdVideoCategory" ColumnName="IdVideoCategory" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VideoCategories">
+            <EntityTypeMapping TypeName="NHapiModel.VideoCategory">
+              <MappingFragment StoreEntitySet="VideoCategory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="IdCourse" ColumnName="IdCourse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
